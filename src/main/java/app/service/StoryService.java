@@ -41,8 +41,8 @@ public class StoryService {
   }
 
   @PlaningPokerSessionUpdate
-  public UserStory updateStory(UserStory updatedUserStory) {
-    var storyToUpdate = storyRepository.findById(updatedUserStory.getId())
+  public UserStory updateStory(Integer id, UserStory updatedUserStory) {
+    var storyToUpdate = storyRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("Story to update not found"));
     storyToUpdate.setDescription(updatedUserStory.getDescription());
     storyToUpdate.setStatus(updatedUserStory.getStatus());

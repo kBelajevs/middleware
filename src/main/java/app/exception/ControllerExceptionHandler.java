@@ -15,7 +15,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   @ExceptionHandler(NoContentException.class)
-  public final ResponseEntity<Object> handleNoContentException(NotFoundException ex){
+  public final ResponseEntity<Object> handleNoContentException(NoContentException ex){
     return ResponseEntity.noContent().build();
   }
 

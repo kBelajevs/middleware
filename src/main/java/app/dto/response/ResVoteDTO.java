@@ -1,14 +1,14 @@
-package app.dto;
+package app.dto.response;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class VoteDTO {
+public class ResVoteDTO {
 
-  private Integer id;
-  private Integer memberId;
+  private String memberName;
   private Integer userStoryId;
+  private String storyRef;
   private Integer value;
 }

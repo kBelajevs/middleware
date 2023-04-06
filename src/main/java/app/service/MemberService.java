@@ -7,6 +7,7 @@ import app.exception.NoContentException;
 import app.exception.NotFoundException;
 import app.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,15 +28,15 @@ public class MemberService {
   @PlaningPokerSessionUpdate
   public void removeMember(Integer memberId) {
     try {
-      var member = getMember(memberId);
-      memberRepository.delete(member);
-    } catch (Exception e) {
+      memberRepository.deleteById(memberId);
+    } catch (EmptyResultDataAccessException e) {
       throw new NoContentException("No user to delete");
     }
   }
 
-  public Member getMember(Integer id){
-    return memberRepository.findById(id).orElseThrow(() -> new NotFoundException("Member not found"));
+  public Member getMember(Integer id) {
+    return memberRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("Member not found"));
   }
 
 }

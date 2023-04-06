@@ -1,4 +1,4 @@
-package app.dto;
+package app.dto.request;
 
 import com.sun.istack.NotNull;
 import lombok.Data;
@@ -6,11 +6,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class MemberDTO {
+public class ReqPlanningPokerSessionDTO {
 
-
-  private Integer memberId;
   @NotNull
-  private String name;
-
+  private String title;
+  private String deckType;
 }

@@ -1,7 +1,8 @@
 package app.controller;
 
 import app.domain.Member;
-import app.dto.MemberDTO;
+import app.dto.request.ReqMemberDTO;
+import app.dto.response.ResMemberDTO;
 import app.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -22,11 +23,11 @@ public class MemberController {
 
   @PostMapping("/members/{sessionId}")
   @ResponseStatus(HttpStatus.CREATED)
-  public MemberDTO joinMemberToSession(@PathVariable Integer sessionId,
-      @RequestBody MemberDTO memberDTO) {
-    var member = modelMapper.map(memberDTO, Member.class);
+  public ResMemberDTO joinMemberToSession(@PathVariable Integer sessionId,
+      @RequestBody ReqMemberDTO reqMemberDTO) {
+    var member = modelMapper.map(reqMemberDTO, Member.class);
     var savedMember = memberService.addMember(member, sessionId);
-    return modelMapper.map(savedMember, MemberDTO.class);
+    return modelMapper.map(savedMember, ResMemberDTO.class);
   }
 
   @DeleteMapping("/members/{memberId}")

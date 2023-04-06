@@ -1,4 +1,4 @@
-package app.dto;
+package app.dto.request;
 
 import app.domain.UserStoryStatus;
 import com.sun.istack.NotNull;
@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UserStoryDTO {
+public class ReqUserStoryDTO {
 
-  private Integer id;
   private String storyRef;
+  @NotNull
   private String description;
   @NotNull
   private UserStoryStatus status;

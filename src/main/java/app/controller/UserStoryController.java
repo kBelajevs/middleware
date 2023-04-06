@@ -1,7 +1,8 @@
 package app.controller;
 
 import app.domain.UserStory;
-import app.dto.UserStoryDTO;
+import app.dto.request.ReqUserStoryDTO;
+import app.dto.response.ResUserStoryDTO;
 import app.service.StoryService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -23,24 +24,23 @@ public class UserStoryController {
 
   @PostMapping("/stories/{sessionId}")
   @ResponseStatus(HttpStatus.CREATED)
-  public UserStoryDTO createUserStory(@PathVariable Integer sessionId,
-      @RequestBody UserStoryDTO userStoryDTO) {
-    var story = modelMapper.map(userStoryDTO, UserStory.class);
+  public ResUserStoryDTO createUserStory(@PathVariable Integer sessionId,
+      @RequestBody ReqUserStoryDTO reqUserStoryDTO) {
+    var story = modelMapper.map(reqUserStoryDTO, UserStory.class);
     var savedStory = storyService.addStory(story, sessionId);
-    return modelMapper.map(savedStory, UserStoryDTO.class);
+    return modelMapper.map(savedStory, ResUserStoryDTO.class);
   }
 
-  @DeleteMapping("/stories/{idUserStory}")
+  @DeleteMapping("/stories/{storyId}")
   public void deleteUserStory(@PathVariable Integer storyId) {
     storyService.removeStory(storyId);
   }
 
-  @PutMapping("/stories/{id}")
-  public UserStoryDTO updateUserStory(@PathVariable Integer id, @RequestBody UserStoryDTO userStoryDTO) {
-    userStoryDTO.setId(id);
+  @PutMapping("/stories/{storyId}")
+  public ReqUserStoryDTO updateUserStory(@PathVariable Integer storyId, @RequestBody ReqUserStoryDTO userStoryDTO) {
     var storyToUpdate = modelMapper.map(userStoryDTO, UserStory.class);
-    var updatedStory = storyService.updateStory(storyToUpdate);
-    return modelMapper.map(updatedStory, UserStoryDTO.class);
+    var updatedStory = storyService.updateStory(storyId, storyToUpdate);
+    return modelMapper.map(updatedStory, ReqUserStoryDTO.class);
   }
 
 }

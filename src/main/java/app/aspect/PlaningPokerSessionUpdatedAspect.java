@@ -1,7 +1,7 @@
 package app.aspect;
 
 import app.domain.ContainsSession;
-import app.dto.PlanningPokerSessionDTO;
+import app.dto.response.ResPlanningPokerSessionDTO;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -21,7 +21,7 @@ public class PlaningPokerSessionUpdatedAspect {
   public void afterMyAnnotation(Object result) {
     ContainsSession containsSession = (ContainsSession) result;
     var session = containsSession.getSession();
-    var sessionDto = modelMapper.map(session, PlanningPokerSessionDTO.class);
+    var sessionDto = modelMapper.map(session, ResPlanningPokerSessionDTO.class);
     messagingTemplate.convertAndSend("/topic/session/" + session.getId(),
         sessionDto);
   }

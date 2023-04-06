@@ -1,7 +1,8 @@
 package app.aspect;
 
 import app.domain.Vote;
-import app.dto.VoteDTO;
+import app.dto.request.ReqVoteDTO;
+import app.dto.response.ResVoteDTO;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @RequiredArgsConstructor
-public class VoteEmittedAspect {
+public class VoteAspect {
 
 
   private final SimpMessagingTemplate messagingTemplate;
@@ -27,7 +28,7 @@ public class VoteEmittedAspect {
     var vote = votes.iterator().next();
     var sessionId = vote.getMember().getSession().getId();
     String topic = String.format("/topic/session/%s/vote-finished", sessionId);
-    var votesDto = modelMapper.map(votes, VoteDTO[].class);
+    var votesDto = modelMapper.map(votes, ResVoteDTO[].class);
     messagingTemplate.convertAndSend(topic, votesDto);
   }
 
