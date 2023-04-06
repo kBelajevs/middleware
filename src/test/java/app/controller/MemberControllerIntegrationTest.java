@@ -8,34 +8,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import app.dto.request.ReqMemberDTO;
 import app.dto.response.ResPlanningPokerSessionDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@Sql(scripts = {"/reset-db.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-public class MemberControllerIntegrationTest {
-
-  @Autowired
-  MockMvc mockMvc;
-
-  @MockBean
-  private SimpMessagingTemplate messagingTemplate;
-
-  @Autowired
-  private ObjectMapper objectMapper;
+public class MemberControllerIntegrationTest extends IntegrationTest {
 
   @Captor
   ArgumentCaptor<ResPlanningPokerSessionDTO> sessionUpdateCaptor;
@@ -48,13 +28,14 @@ public class MemberControllerIntegrationTest {
     req.setName("My NickName");
 
     // Join session
-    mockMvc.perform(MockMvcRequestBuilders.post("/members/1").
+    mockMvc.perform(MockMvcRequestBuilders.post("/members/" + SESSION_ID).
             contentType(MediaType.APPLICATION_JSON).
             characterEncoding("UTF-8").content(objectMapper.writeValueAsString(req)))
         .andExpect(status().isCreated());
 
     // Check that session data send
-    verify(messagingTemplate).convertAndSend(eq("/topic/session/1"), sessionUpdateCaptor.capture());
+    verify(messagingTemplate).convertAndSend(eq("/topic/session/" + SESSION_ID),
+        sessionUpdateCaptor.capture());
     var sessionUpdate = sessionUpdateCaptor.getValue();
     assertNotNull(sessionUpdate.getTitle());
     assertFalse(sessionUpdate.getStories().isEmpty());
@@ -69,7 +50,7 @@ public class MemberControllerIntegrationTest {
     req.setName("My NickName");
 
     // Join session
-    mockMvc.perform(MockMvcRequestBuilders.post("/members/45").
+    mockMvc.perform(MockMvcRequestBuilders.post("/members/" + NON_EXISTING_SESSION_ID).
             contentType(MediaType.APPLICATION_JSON).
             characterEncoding("UTF-8").content(objectMapper.writeValueAsString(req)))
         .andExpect(status().isNotFound());
@@ -79,7 +60,7 @@ public class MemberControllerIntegrationTest {
   @Test
   @SneakyThrows
   public void removeMemberFromSessionTest() {
-    mockMvc.perform(MockMvcRequestBuilders.delete("/members/1").
+    mockMvc.perform(MockMvcRequestBuilders.delete("/members/" + SESSION_ID).
             contentType(MediaType.APPLICATION_JSON).
             characterEncoding("UTF-8"))
         .andExpect(status().isOk());
@@ -88,11 +69,9 @@ public class MemberControllerIntegrationTest {
   @Test
   @SneakyThrows
   public void removeMemberFromNonExistingSessionTest() {
-    mockMvc.perform(MockMvcRequestBuilders.delete("/members/45").
+    mockMvc.perform(MockMvcRequestBuilders.delete("/members/" + NON_EXISTING_SESSION_ID).
             contentType(MediaType.APPLICATION_JSON).
             characterEncoding("UTF-8"))
         .andExpect(status().isNoContent());
   }
-
-
 }
