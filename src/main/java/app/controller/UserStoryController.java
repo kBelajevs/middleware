@@ -36,10 +36,15 @@ public class UserStoryController {
     storyService.removeStory(storyId);
   }
 
-  @PutMapping("/stories/{storyId}")
-  public ReqUserStoryDTO updateUserStory(@PathVariable Integer storyId, @RequestBody ReqUserStoryDTO userStoryDTO) {
-    var storyToUpdate = modelMapper.map(userStoryDTO, UserStory.class);
-    var updatedStory = storyService.updateStory(storyId, storyToUpdate);
+  @PutMapping("/stories/open-voting/{storyId}")
+  public ReqUserStoryDTO starVotingForStory(@PathVariable Integer storyId) {
+    var updatedStory = storyService.openVoting(storyId);
+    return modelMapper.map(updatedStory, ReqUserStoryDTO.class);
+  }
+
+  @PutMapping("/stories/close-voting/{storyId}")
+  public ReqUserStoryDTO finishVotingForStory(@PathVariable Integer storyId) {
+    var updatedStory = storyService.closeVoting(storyId);
     return modelMapper.map(updatedStory, ReqUserStoryDTO.class);
   }
 

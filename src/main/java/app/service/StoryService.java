@@ -17,15 +17,12 @@ public class StoryService {
   private final PokerPlanningSessionService sessionService;
   private final UserStoryRepository storyRepository;
 
+  @PlaningPokerSessionUpdate
   public UserStory addStory(UserStory userStory, Integer sessionId) {
     var session = sessionService.getSessionByIdOrThrow(sessionId);
     userStory.setSession(session);
     storyRepository.save(userStory);
     return userStory;
-  }
-
-  public UserStory getStoryById(Integer id){
-    return storyRepository.findById(id).orElseThrow(() -> new NotFoundException("Story not found"));
   }
 
   @PlaningPokerSessionUpdate
@@ -40,15 +37,22 @@ public class StoryService {
     }
   }
 
-  @PlaningPokerSessionUpdate
-  public UserStory updateStory(Integer id, UserStory updatedUserStory) {
-    var storyToUpdate = storyRepository.findById(id)
-        .orElseThrow(() -> new NotFoundException("Story to update not found"));
-    storyToUpdate.setDescription(updatedUserStory.getDescription());
-    storyToUpdate.setStatus(updatedUserStory.getStatus());
-    storyToUpdate.setStoryRef(updatedUserStory.getStoryRef());
-    storyRepository.save(storyToUpdate);
-    return storyToUpdate;
+  public UserStory getStoryById(Integer id){
+    return storyRepository.findById(id).orElseThrow(() -> new NotFoundException("Story not found"));
+  }
+
+  public UserStory openVoting(Integer id){
+    var story = getStoryById(id);
+    story.setStatus(UserStoryStatus.VOTING);
+    storyRepository.save(story);
+    return story;
+  }
+
+  public UserStory closeVoting(Integer id){
+    var story = getStoryById(id);
+    story.setStatus(UserStoryStatus.VOTED);
+    storyRepository.save(story);
+    return story;
   }
 
 }

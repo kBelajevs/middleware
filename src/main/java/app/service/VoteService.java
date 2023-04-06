@@ -5,7 +5,6 @@ import app.domain.UserStoryStatus;
 import app.domain.Vote;
 import app.exception.ActionForbiddenException;
 import app.repository.VoteRepository;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,18 +16,16 @@ public class VoteService {
   private final StoryService storyService;
   private final MemberService memberService;
 
-  public Set<Vote> getVotes(Integer storyId) {
-    var story = storyService.getStoryById(storyId);
-    return story.getVotes();
-  }
-
   public Vote vote(Integer memberId, Integer storyId, Integer value) {
-    var member = memberService.getMember(memberId);
     var story = storyService.getStoryById(storyId);
-
     if (!UserStoryStatus.VOTING.equals(story.getStatus())) {
       throw new ActionForbiddenException("Voting not allowed for this story");
     }
+
+    var member = memberService.getMember(memberId);
+    voteRepository.findByMemberAndUserStory(member, story).ifPresent(it -> {
+      throw new ActionForbiddenException("this member already voted for this story");
+    });
 
     var vote = new Vote();
     vote.setMember(member);

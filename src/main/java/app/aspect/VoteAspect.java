@@ -1,8 +1,8 @@
 package app.aspect;
 
+import app.domain.UserStory;
 import app.domain.Vote;
 import app.dto.response.ResVoteDTO;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -20,14 +20,13 @@ public class VoteAspect {
   private final ModelMapper modelMapper;
 
   @AfterReturning(
-      pointcut = "execution(* app.service.VoteService.getVotes(..))",
+      pointcut = "execution(* app.service.StoryService.closeVoting(..))",
       returning = "result")
   public void afterVoteEmitted(Object result) {
-    var votes = (Set<Vote>) result;
-    var vote = votes.iterator().next();
-    var sessionId = vote.getMember().getSession().getId();
+    var story = (UserStory) result;
+    var sessionId = story.getSession().getId();
     String topic = String.format("/topic/session/%s/vote-finished", sessionId);
-    var votesDto = modelMapper.map(votes, ResVoteDTO[].class);
+    var votesDto = modelMapper.map(story.getVotes(), ResVoteDTO[].class);
     messagingTemplate.convertAndSend(topic, votesDto);
   }
 

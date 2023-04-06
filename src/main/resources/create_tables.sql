@@ -16,7 +16,7 @@ CREATE TABLE pokerDB.user_story (
     id INT PRIMARY KEY AUTO_INCREMENT,
     description VARCHAR(255),
     story_ref VARCHAR(255),
-    status VARCHAR(10) DEFAULT 'PENDING' CHECK (status IN ('PENDING', 'VOTING', 'VOTE')),
+    status VARCHAR(10) DEFAULT 'PENDING' CHECK (status IN ('PENDING', 'VOTING', 'VOTED')),
     session_id INT NOT NULL,
     FOREIGN KEY (session_id) REFERENCES pokerDB.planning_poker_session(id)
 );
