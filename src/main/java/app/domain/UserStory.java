@@ -3,6 +3,7 @@ package app.domain;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -38,7 +39,7 @@ public class UserStory implements ContainsSession{
   @Enumerated(EnumType.STRING)
   private UserStoryStatus status = UserStoryStatus.PENDING;
 
-  @OneToMany(mappedBy = "userStory")
+  @OneToMany(mappedBy = "userStory", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private Set<Vote> votes = new HashSet<>();
 
   @ManyToOne(fetch = FetchType.LAZY)

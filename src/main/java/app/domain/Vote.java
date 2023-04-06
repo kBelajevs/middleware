@@ -25,11 +25,11 @@ public class Vote {
   private Integer value;
 
   @ManyToOne
-  @JoinColumn(name = "user_story_id", nullable = false)
+  @JoinColumn(name = "user_story_id")
   private UserStory userStory;
 
   @ManyToOne
-  @JoinColumn(name = "member_id", nullable = false)
+  @JoinColumn(name = "member_id")
   private Member member;
 
   @Override
