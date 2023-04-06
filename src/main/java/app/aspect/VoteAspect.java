@@ -1,7 +1,6 @@
 package app.aspect;
 
 import app.domain.Vote;
-import app.dto.request.ReqVoteDTO;
 import app.dto.response.ResVoteDTO;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -43,25 +42,6 @@ public class VoteAspect {
     String topic = String.format("/topic/session/%s/vote-emit",
         vote.getMember().getSession().getId());
     messagingTemplate.convertAndSend(topic, voteEmit);
-  }
-
-  private static class VoteEmit {
-
-    private final int totalVotes;
-    private final String voter;
-
-    public VoteEmit(int totalVotes, String voter) {
-      this.totalVotes = totalVotes;
-      this.voter = voter;
-    }
-
-    public int getTotalVotes() {
-      return totalVotes;
-    }
-
-    public String getVoter() {
-      return voter;
-    }
   }
 
 }
