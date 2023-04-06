@@ -17,6 +17,7 @@ public class IntegrationTest {
   public static final String SESSION_ID = "1";
   public static final String NON_EXISTING_SESSION_ID = "45";
   public static final Integer VOTING_USER_STORY_ID = 2;
+  public static final Integer VOTING_USER_STORY_ID_ANOTHER = 4;
   public static final Integer EXISTING_MEMBER_ID = 1;
   public static final Integer EXISTING_MEMBER_ID_ANOTHER = 2;
   public static final Integer PENDING_USER_STORY_ID = 1;

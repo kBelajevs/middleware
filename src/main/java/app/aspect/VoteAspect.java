@@ -3,6 +3,7 @@ package app.aspect;
 import app.domain.UserStory;
 import app.domain.Vote;
 import app.dto.response.ResVoteDTO;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -27,7 +28,7 @@ public class VoteAspect {
     var sessionId = story.getSession().getId();
     String topic = String.format("/topic/session/%s/vote-finished", sessionId);
     var votesDto = modelMapper.map(story.getVotes(), ResVoteDTO[].class);
-    messagingTemplate.convertAndSend(topic, votesDto);
+    messagingTemplate.convertAndSend(topic, Arrays.asList(votesDto));
   }
 
   @AfterReturning(
