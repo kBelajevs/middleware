@@ -10,5 +10,4 @@ public class ReqMemberDTO {
 
   @NotNull
   private String name;
-
 }

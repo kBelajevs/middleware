@@ -6,5 +6,4 @@ import lombok.Data;
 public class ExceptionResponse {
 
   private final String message;
-
 }

@@ -1,7 +1,6 @@
 package app.dto.response;
 
 import app.domain.UserStoryStatus;
-import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

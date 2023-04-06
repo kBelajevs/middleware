@@ -28,7 +28,8 @@ public class MemberService {
   @PlaningPokerSessionUpdate
   public Member removeMember(Integer memberId) {
     try {
-      var member = memberRepository.findById(memberId).orElseThrow(() -> new NoContentException("Member no found"));
+      var member = memberRepository.findById(memberId)
+          .orElseThrow(() -> new NoContentException("Member no found"));
       memberRepository.delete(member);
       return member;
     } catch (EmptyResultDataAccessException e) {
@@ -40,5 +41,4 @@ public class MemberService {
     return memberRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("Member not found"));
   }
-
 }

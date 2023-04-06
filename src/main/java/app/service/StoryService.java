@@ -37,18 +37,18 @@ public class StoryService {
     }
   }
 
-  public UserStory getStoryById(Integer id){
+  public UserStory getStoryById(Integer id) {
     return storyRepository.findById(id).orElseThrow(() -> new NotFoundException("Story not found"));
   }
 
-  public UserStory openVoting(Integer id){
+  public UserStory openVoting(Integer id) {
     var story = getStoryById(id);
     story.setStatus(UserStoryStatus.VOTING);
     storyRepository.save(story);
     return story;
   }
 
-  public UserStory closeVoting(Integer id){
+  public UserStory closeVoting(Integer id) {
     var story = getStoryById(id);
     story.setStatus(UserStoryStatus.VOTED);
     storyRepository.save(story);

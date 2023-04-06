@@ -37,15 +37,45 @@ public class PokerPlanningSessionController {
 
   @PostMapping("/sessions")
   @ResponseStatus(HttpStatus.CREATED)
-  public ResPlanningPokerSessionDTO createSession(@RequestBody ReqPlanningPokerSessionDTO sessionBody) {
+  public ResPlanningPokerSessionDTO createSession(
+      @RequestBody ReqPlanningPokerSessionDTO sessionBody) {
     var sessionToSave = modelMapper.map(sessionBody, PlanningPokerSession.class);
     var savedSession = sessionService.createSession(sessionToSave);
     var sessionDto = modelMapper.map(savedSession, ResPlanningPokerSessionDTO.class);
-    sessionDto.add(linkTo(MemberController.class).slash("members").slash(sessionDto.getSessionId()).withRel("joinSession"));
-    sessionDto.add(linkTo(PokerPlanningSessionController.class).slash("sessionSocket").slash("planning-poker-websocket").withRel("sessionSocket"));
-    sessionDto.add(linkTo(PokerPlanningSessionController.class).slash("sessionSocket").slash("topic").slash("session").slash(sessionDto.getSessionId()).withRel("sessionUpdateTopic"));
-    sessionDto.add(linkTo(PokerPlanningSessionController.class).slash("sessionSocket").slash("topic").slash("session").slash(sessionDto.getSessionId()).slash("vote-emit").withRel("voteEmitTopic"));
-    sessionDto.add(linkTo(PokerPlanningSessionController.class).slash("sessionSocket").slash("topic").slash("session").slash(sessionDto.getSessionId()).slash("vote-finish").withRel("voteFinishedTopic"));
+
+    sessionDto.add(linkTo(MemberController.class)
+        .slash("members")
+        .slash(sessionDto.getSessionId())
+        .withRel("joinSession"));
+
+    sessionDto.add(linkTo(PokerPlanningSessionController.class)
+        .slash("sessionSocket")
+        .slash("planning-poker-websocket").
+        withRel("sessionSocket"));
+
+    sessionDto.add(linkTo(PokerPlanningSessionController.class)
+        .slash("sessionSocket")
+        .slash("topic")
+        .slash("session")
+        .slash(sessionDto.getSessionId())
+        .withRel("sessionUpdateTopic"));
+
+    sessionDto.add(linkTo(PokerPlanningSessionController.class)
+        .slash("sessionSocket")
+        .slash("topic")
+        .slash("session")
+        .slash(sessionDto.getSessionId())
+        .slash("vote-emit")
+        .withRel("voteEmitTopic"));
+
+    sessionDto.add(linkTo(PokerPlanningSessionController.class)
+        .slash("sessionSocket")
+        .slash("topic")
+        .slash("session")
+        .slash(sessionDto.getSessionId())
+        .slash("vote-finish")
+        .withRel("voteFinishedTopic"));
+
     return sessionDto;
   }
 }

@@ -47,5 +47,4 @@ public class UserStoryController {
     var updatedStory = storyService.closeVoting(storyId);
     return modelMapper.map(updatedStory, ReqUserStoryDTO.class);
   }
-
 }

@@ -34,6 +34,5 @@ public class PokerPlanningSessionService {
   public PlanningPokerSession getSessionByIdOrThrow(Integer sessionId) {
     return sessionRepository.findById(sessionId)
         .orElseThrow(() -> new NotFoundException("Session not found"));
-
   }
 }

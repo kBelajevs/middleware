@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class VoteAspect {
 
-
   private final SimpMessagingTemplate messagingTemplate;
   private final ModelMapper modelMapper;
 
@@ -43,5 +42,4 @@ public class VoteAspect {
         vote.getMember().getSession().getId());
     messagingTemplate.convertAndSend(topic, voteEmit);
   }
-
 }

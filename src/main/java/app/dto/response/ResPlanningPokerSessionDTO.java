@@ -12,5 +12,4 @@ public class ResPlanningPokerSessionDTO extends RepresentationModel<ResPlanningP
   private String deckType;
   private List<ResUserStoryDTO> stories;
   private List<ResMemberDTO> members;
-
 }

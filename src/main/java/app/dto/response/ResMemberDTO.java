@@ -9,5 +9,4 @@ public class ResMemberDTO {
 
   private Integer memberId;
   private String name;
-
 }

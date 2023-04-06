@@ -23,7 +23,7 @@ import lombok.Setter;
 @Table(name = "user_story", schema = "pokerDB")
 @Getter
 @Setter
-public class UserStory implements ContainsSession{
+public class UserStory implements ContainsSession {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
