@@ -23,7 +23,7 @@ public class PokerPlanningSessionService {
     try {
       sessionRepository.deleteById(sessionId);
     } catch (Exception e) {
-      throw new NoContentException("No user to delete");
+      throw new NoContentException("No session to delete");
     }
   }
 
