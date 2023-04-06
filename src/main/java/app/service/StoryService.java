@@ -29,7 +29,7 @@ public class StoryService {
   public UserStory removeStory(Integer storyId) {
     var storyToDelete = storyRepository.findById(storyId)
         .orElseThrow(() -> new NoContentException("Story to delete not found"));
-    if (!UserStoryStatus.PENDING.equals(storyToDelete.getStatus())) {
+    if (UserStoryStatus.PENDING.equals(storyToDelete.getStatus())) {
       storyRepository.delete(storyToDelete);
       return storyToDelete;
     } else {

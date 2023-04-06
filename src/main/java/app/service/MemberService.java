@@ -26,9 +26,11 @@ public class MemberService {
   }
 
   @PlaningPokerSessionUpdate
-  public void removeMember(Integer memberId) {
+  public Member removeMember(Integer memberId) {
     try {
-      memberRepository.deleteById(memberId);
+      var member = memberRepository.findById(memberId).orElseThrow(() -> new NoContentException("Member no found"));
+      memberRepository.delete(member);
+      return member;
     } catch (EmptyResultDataAccessException e) {
       throw new NoContentException("No user to delete");
     }
